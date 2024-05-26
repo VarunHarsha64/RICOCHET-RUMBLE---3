@@ -91,7 +91,7 @@ function handleMove1(e) {
 
 function handleMove2(e) {
     document.querySelectorAll('.player2').forEach((piecenew,j)=>{
-        piecenew.removeEventListener('click', handleMove1);
+        piecenew.removeEventListener('click', handleMove2);
     }); 
     //test succesful - removal of event listener is also successful
     //console.log('testing if click on pieces work');
@@ -99,6 +99,18 @@ function handleMove2(e) {
     const targetId = parseInt(e.target.parentNode.dataset.id);
     //console.log(parseInt(e.target.parentNode.dataset.id),'testing if id of elementis same as that of clicked element');
     //test successful - clicking anywhere inside the box gives the id of the object
+
+    e.target.parentNode.addEventListener('click',()=>{
+        gameEngine();
+        var buttonLeft = document.querySelector('.left-rotate');
+        var newButtonLeft = buttonLeft.cloneNode(true);
+        buttonLeft.parentNode.replaceChild(newButtonLeft, buttonLeft); 
+
+        var buttonRight = document.querySelector('.right-rotate');
+        var newButtonRight = buttonRight.cloneNode(true);
+        buttonRight.parentNode.replaceChild(newButtonRight, buttonRight); 
+    });
+
     if (targetId === 6) {
         handleTitanMove(everythingObject.titan2,2);
     }
@@ -333,6 +345,9 @@ function handleTankMove(PiecePlayer,f) {
 }
 
 function gameEngine() {
+
+    document.querySelector('.hidden-buttons').classList.remove('hidden-buttons-visible');
+
     handleAngleCheck();
     handleGridRender();
     handlePiecesRender();
@@ -674,6 +689,11 @@ function handleWinWindow(f) {
     clickBlocker.style.backgroundColor = 'rgba(0, 0, 0,0.5)';
     clickBlocker.style.display = 'block';
     document.querySelector('.pop-up').style.display = 'block';
+    document.querySelector('.close-button').addEventListener('click',()=>{
+        handleResetButton();
+    });
+
+
 }
 
 function handleResetButton() {
