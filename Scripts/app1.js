@@ -368,6 +368,7 @@ function gameEngine() {
     localStorage.setItem('everything',JSON.stringify(everythingObject));
     localStorage.setItem('piecePosition',JSON.stringify(piecePositions));
     localStorage.setItem('flag',flag);
+    
 }
 
 function handlePlayerTurn(flag) {
@@ -693,6 +694,8 @@ function handleWinWindow(f) {
         handleResetButton();
     });
 
+    clearInterval(timerRequest);
+
 
 }
 
@@ -700,7 +703,44 @@ function handleResetButton() {
     localStorage.removeItem('everything');
     localStorage.removeItem('flag');
     localStorage.removeItem('piecePosition');
+    localStorage.removeItem('timerList');
     location.reload();
+}
+
+function formatTwoDigits(number) {
+    return number < 10 ? `0${number}` : `${number}`;
+}
+
+function handleTimer() {
+    let shootingInclude = document.querySelector('.switch input').checked;
+    document.querySelector('.player-1-timer span').innerHTML = `00:${formatTwoDigits(Math.floor(timerList[0]/60))}:${formatTwoDigits(timerList[0]%60)}`;
+    document.querySelector('.player-2-timer span').innerHTML = `00:${formatTwoDigits(Math.floor(timerList[1]/60))}:${formatTwoDigits(timerList[1]%60)}`;
+
+    if(shootingInclude) {
+        if(flag===1) {
+            timerList[0]-=1;
+        }
+        else if (flag === -1) {
+            timerList[1]-=1;
+        }
+    }
+    else {
+        if(!shooting) {
+            if(flag===1) {
+                timerList[0]-=1;
+            }
+            else if (flag === -1) {
+                timerList[1] -=1;
+            }
+        }
+    }
+    localStorage.setItem('timerList',JSON.stringify(timerList));
+
+}
+
+function runTimer() {
+    document.removeEventListener('click',runTimer);
+    timerRequest = setInterval(handleTimer,1000);
 }
 
 function calculateXCenter(box,height, width) {
@@ -758,6 +798,19 @@ let x,y;
 let shooting = 0;
 let firstShootStop = 0;
 
+let timerList;
+var timerListTemp = localStorage.getItem('timerList');
+
+if (timerListTemp == null ) {
+    timerList = [600,600];
+}
+else {
+    timerList = JSON.parse(timerListTemp);
+}
+
+let timerRequest;
+
+
 const boardBorderLeft = calculateXCenter(0,15,15) - 30;
 const boardBorderRight = calculateXCenter(7,15,15) + 30;
 const boardBorderTop = calculateYCenter(0,15,15) - 15;
@@ -772,7 +825,11 @@ document.querySelector('.reset-button').addEventListener('click',handleResetButt
 
 
 /* general functions to be called over here */
+document.querySelector('.player-1-timer span').innerHTML = `00:${formatTwoDigits(Math.floor(timerList[0]/60))}:${formatTwoDigits(timerList[0]%60)}`;
+document.querySelector('.player-2-timer span').innerHTML = `00:${formatTwoDigits(Math.floor(timerList[1]/60))}:${formatTwoDigits(timerList[1]%60)}`;
+document.addEventListener('click',runTimer);
 gameEngine();
+
 
 // let test = setInterval(()=>{
 //     console.log(flag);
