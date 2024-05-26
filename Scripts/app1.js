@@ -467,7 +467,7 @@ function handleBulletShoot(PiecePlayer,f) {
 
     request = setInterval(()=>{
         shoot(absorbers,titans,ricochets,semiRicochets);
-    },5);
+    },refreshRate);
     shooting=1;
     clickBlocker.style.display = 'block';
 }
@@ -734,6 +734,13 @@ function handleTimer() {
             }
         }
     }
+
+    if(timerList[0] ===0) {
+        handleWinWindow(2);
+    }
+    else if (timerList[1] === 0) {
+        handleWinWindow(1);
+    }
     localStorage.setItem('timerList',JSON.stringify(timerList));
 
 }
@@ -769,6 +776,45 @@ function calculateYCenter(box,height,width) {
     return top-(boxSize/2);
 }
 
+function handlePauseButton() {
+    clickBlocker.style.display = 'block';
+    clickBlocker.style.backgroundColor = 'rgba(0,0,0,0.5)';
+    clearInterval(request);
+    clearInterval(timerRequest);
+    let pauseButton = document.querySelector('.js-pause-button');
+    pauseButton.removeEventListener('click',handlePauseButton)
+    
+    pauseButton.classList.add('js-continue-button');
+    pauseButton.innerHTML = 'Continue';
+    pauseButton.classList.remove('js-pause-button');
+    document.querySelector('.js-continue-button').addEventListener('click',handleContinueButton);
+    const bullet = document.querySelector('.bullet').remove();
+}
+
+function handleContinueButton() {
+    clickBlocker.style.display = 'none';
+    clickBlocker.style.backgroundColor = 'rgba(0,0,0,0)';
+    runTimer();
+
+    let continueButton = document.querySelector('.js-continue-button');
+
+    continueButton.removeEventListener('click',handleContinueButton)
+    continueButton.classList.add('js-pause-button');
+    continueButton.innerHTML = 'Pause';
+    continueButton.classList.remove('js-continue-button');
+    document.querySelector('.js-pause-button').addEventListener('click', handlePauseButton);
+    if(shooting===1) {
+        if(flag===1) {
+            handleBulletShoot(everythingObject.cannon1,1);
+            console.log('test4');
+        }
+        else if (flag === -1) {
+            handleBulletShoot(everythingObject.cannon2,2);
+        }
+    }
+
+}
+
 
 /* general variables to be declared over here */
 
@@ -791,6 +837,7 @@ else {
     flag = parseInt(flagTemp);
 }
 //console.log(flagTemp);
+let refreshRate = 5;
 let request;
 let velocity = 4;
 let path;
@@ -829,6 +876,8 @@ document.querySelector('.player-1-timer span').innerHTML = `00:${formatTwoDigits
 document.querySelector('.player-2-timer span').innerHTML = `00:${formatTwoDigits(Math.floor(timerList[1]/60))}:${formatTwoDigits(timerList[1]%60)}`;
 document.addEventListener('click',runTimer);
 gameEngine();
+
+document.querySelector('.js-pause-button').addEventListener('click',handlePauseButton)
 
 
 // let test = setInterval(()=>{

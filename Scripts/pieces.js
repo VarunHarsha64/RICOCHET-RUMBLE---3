@@ -77,6 +77,7 @@ else {
     everythingObject = JSON.parse(everythingObjectTemp);
 }
 
+
 let piecePositions;
 var piecePositionsTemp = localStorage.getItem('piecePosition');
 console.log(piecePositionsTemp,'check2');

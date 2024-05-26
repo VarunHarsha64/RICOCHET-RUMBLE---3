@@ -302,6 +302,7 @@ z-index: -1;
 
 .bullet {
     position: absolute;
+    z-index: 100000;
 }
 
 /*click blocker segment*/
@@ -444,6 +445,30 @@ z-index: -1;
     padding: 0;
     margin-right: 5px;
   }
+
+@media only screen and (max-width: 768px) {
+
+    .page-container {
+        flex-direction: column;
+        padding: 1%;
+    }
+
+    .page-right {
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+    
+    .switch-text {
+        font-size: 29px;
+    }
+
+    .page-right {
+        max-height: 230px;
+        margin-bottom: 10px;
+    }
+
+}
+
 
 
 
