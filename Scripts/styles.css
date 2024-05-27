@@ -451,6 +451,7 @@ z-index: -1;
     .page-container {
         flex-direction: column;
         padding: 1%;
+        justify-content: flex-start;
     }
 
     .page-right {
@@ -463,10 +464,18 @@ z-index: -1;
     }
 
     .page-right {
-        max-height: 230px;
         margin-bottom: 10px;
     }
 
+    .page-container{
+        transform: scale(0.6);
+        /* width: 200%; Adjust the width to ensure the scaled-down content fits
+        height: 200%; Adjust the height to ensure the scaled-down content fits */
+    }
+
+    .page-left {
+        height: 0;
+    }
 }
 
 

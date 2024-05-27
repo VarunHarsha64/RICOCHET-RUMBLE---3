@@ -68,6 +68,13 @@ function handleMove1(e) {
 
     e.target.parentNode.addEventListener('click',()=>{
         gameEngine();
+        var buttonLeft = document.querySelector('.left-rotate');
+        var newButtonLeft = buttonLeft.cloneNode(true);
+        buttonLeft.parentNode.replaceChild(newButtonLeft, buttonLeft); 
+
+        var buttonRight = document.querySelector('.right-rotate');
+        var newButtonRight = buttonRight.cloneNode(true);
+        buttonRight.parentNode.replaceChild(newButtonRight, buttonRight);
     })
 
     if (targetId === 1) {
