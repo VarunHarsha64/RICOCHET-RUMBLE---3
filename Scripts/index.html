@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+    <div class="extra-button">
+        <img class="history-button" src = '../Images/history-icon.png'>
+        <!-- <img class="settings-button"> -->
+
+    </div>
     <div class="click-blocker"></div>
     <div class="pop-up">
         <div class="close-button">&times;</div>
@@ -15,6 +20,17 @@
             <div class="winner-details"> WON THE GAME!</div>
         </div>
     </div>
+
+    <div class="history-pop-up">
+        <div class="history-title-section">
+            <div class="history-pop-up-title">History of Moves:</div>
+            <div class="history-close-button">x</div>
+        </div>
+        
+        <div class="history-of-moves"></div>
+    </div>
+
+
     <div class="page-container">
         <div class="page-left"></div>
         <div class="page-centre">
@@ -34,8 +50,15 @@
             
             <div class="buttons">
                 <p>Turn: <span class="player">Player 1</span></p>
-                <button class="pause-button pause js-pause-button">Pause</button>
-                <button class="pause-button reset-button">Reset</button>
+                <div class="buttons-division">
+                    <button class="pause-button pause js-pause-button">Pause</button>
+                    <button class="pause-button reset-button">Reset</button>
+                </div>
+                <div class="buttons-division-2">
+                    <button class="undo-button">UNDO</button>
+                    <button class="redo-button">REDO</button>
+                </div>
+                
             </div>
             
 

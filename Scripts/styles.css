@@ -11,6 +11,7 @@ body {
     background-size: cover;
 
     font-family: 'CustomFont';
+    position: relative;
 }
 
 .page-container {
@@ -162,6 +163,14 @@ body {
 .buttons p {
     color: white;
     font-size: 30px;
+}
+
+.buttons-division {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .pause-button {
@@ -477,6 +486,124 @@ z-index: -1;
         height: 0;
     }
 }
+
+.extra-button{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border:1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    justify-content: center;
+    height: 4%;
+    padding: 10px;
+    z-index: 10000;
+}
+
+.history-button{
+    height: 100%;
+}
+
+.history-pop-up {
+    color: #fff;
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    background: rgba(227, 155, 109, 0.495); 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 1px;
+    border:1px solid rgba(255, 132, 0, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    width: 50%;
+    max-width: 400px;
+    height: 400px;
+    max-height: 500px;
+    overflow-y: scroll;
+
+    scrollbar-width: 5px; /* For Firefox */
+    scrollbar-color: #00000041 #815a5a00;
+}
+
+.history-title-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.history-pop-up-title {
+    display: inline;
+    text-align: left;
+    font-size: 35px;
+}
+
+.history-close-button {
+    display: block;
+    text-align: end;
+    font-size: 40px;
+}
+
+.undo-button, .redo-button {
+    font-family: 'CustomFont';
+    padding: 10px 10px;
+    border-radius: 3px;
+    box-shadow: 0px 0px 12px -2px rgba(0,0,0,0.5);
+    line-height: 1.25;
+    background: #3f7819;
+    text-decoration: none;
+    color: white;
+    font-size: 30px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    position: relative;
+    transition: background-color .6s ease;
+    overflow: hidden;
+    
+    
+    
+  }
+
+  .undo-button:after,
+  .redo-button:after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: 50%;
+    left: 50%;
+    top: var(--mouse-y);
+    left: var(--mouse-x);
+    transform-style: flat;
+    transform: translate3d(-50%,-50%,0);
+    background: rgba(white,.1);
+    border-radius: 100%;
+    transition: width .3s ease, height .3s ease;
+  }
+
+  .undo-button:focus,
+.undo-button:hover,
+.redo-button:focus,
+.redo-button:hover {
+    background: darken(#FC6E51,7%);
+}
+
+.buttons-division-2 {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
 
 
 

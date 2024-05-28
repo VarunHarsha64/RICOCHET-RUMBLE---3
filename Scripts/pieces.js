@@ -14,9 +14,11 @@ if (everythingObjectTemp == null) {
         },
         tank1 : {
             id: 2,
-            img: `<div class="game-pieces player1" data-id="2"><img src="../Images/tank-new-1.png"></div>`,
+            img: `<div class="game-pieces player1" data-id="2"><img src="../Images/tank-new-updated-1.png"></div>`,
             row:0,
-            column:6
+            column:6,
+            angle : 0 ,
+            allow: 'right'
         },
         cannon1 :{
             id: 3,
@@ -24,51 +26,81 @@ if (everythingObjectTemp == null) {
             row: 0,
             column:2
         },
-        ricochet1 :{
+        ricochet11 :{
             id: 4,
             img: `<div class="game-pieces player1 ricochet1" data-id="4"><img src="../Images/ricochet-new-1.png"></div>`,
             row:1,
             column:3,
             angle: 0
         },
-        semiRicochet1 : {
+        ricochet12 :{
             id: 5,
-            img: `<div class="game-pieces player1 semi-ricochet1" data-id="5"><img src="../Images/semi-ricochet-new-1.png"></div>`,
+            img: `<div class="game-pieces player1 ricochet1" data-id="5"><img src="../Images/ricochet-new-1.png"></div>`,
+            row:1,
+            column:1,
+            angle: 0
+        },
+        semiRicochet11 : {
+            id: 6,
+            img: `<div class="game-pieces player1 semi-ricochet1" data-id="6"><img src="../Images/semi-ricochet-new-1.png"></div>`,
             row:1,
             column:5,
             angle: 180
         },
+        semiRicochet12 : {
+            id: 7,
+            img: `<div class="game-pieces player1 semi-ricochet1" data-id="7"><img src="../Images/semi-ricochet-new-1.png"></div>`,
+            row:1,
+            column:6,
+            angle: 180
+        },
         titan2 : {
-            id: 6,
-            img: `<div class="game-pieces player2" data-id="6"><img src="../Images/titan-new-2.png"></div>`,
+            id: 8,
+            img: `<div class="game-pieces player2" data-id="8"><img src="../Images/titan-new-2.png"></div>`,
             row:7,
             column:4,
             imgTag:'><img src="../Images/titan-new-2.png">'
         },
         tank2 : {
-            id: 7,
-            img: `<div class="game-pieces player2" data-id="7"><img src="../Images/tank-new-2.png"></div>`,
+            id: 9,
+            img: `<div class="game-pieces player2" data-id="9"><img src="../Images/tank-new-updated-2.png"></div>`,
             row:7,
-            column:2
+            column:2,
+            angle: 0,
+            allow: 'right'
         },
         cannon2 : {
-            id: 8,
-            img: `<div class="game-pieces player2" data-id="8"><img src="../Images/cannon-new-2.png"></div>`,
+            id: 10,
+            img: `<div class="game-pieces player2" data-id="10"><img src="../Images/cannon-new-2.png"></div>`,
             row:7,
             column:6
         },
-        ricochet2 : {
-            id: 9,
-            img: `<div class="game-pieces player2 ricochet2" data-id="9"><img src="../Images/ricochet-new-2.png"></div>`,
+        ricochet21 : {
+            id: 11,
+            img: `<div class="game-pieces player2 ricochet2" data-id="11"><img src="../Images/ricochet-new-2.png"></div>`,
             row:6,
             column:5,
             angle: 180
         },
-        semiRicochet2 : {
-            id: 10,
-            img: `<div class="game-pieces player2 semi-ricochet2" data-id="10"><img src="../Images/semi-ricochet-new-2.png"></div>`,
+        ricochet22 : {
+            id: 12,
+            img: `<div class="game-pieces player2 ricochet2" data-id="12"><img src="../Images/ricochet-new-2.png"></div>`,
             row:6,
-            column:3,
+            column:4,
+            angle: 180
+        },
+        semiRicochet21 : {
+            id: 13,
+            img: `<div class="game-pieces player2 semi-ricochet2" data-id="13"><img src="../Images/semi-ricochet-new-2.png"></div>`,
+            row:6,
+            column:2,
+            angle:0
+        },
+        semiRicochet22 : {
+            id: 14,
+            img: `<div class="game-pieces player2 semi-ricochet2" data-id="14"><img src="../Images/semi-ricochet-new-2.png"></div>`,
+            row:6,
+            column:1,
             angle:0
         }
     }
@@ -85,12 +117,12 @@ console.log(piecePositionsTemp,'check2');
 if (piecePositionsTemp == null ) {
     piecePositions = [
         ["","",everythingObject.cannon1.img,"",everythingObject.titan1.img,"",everythingObject.tank1.img, ""],
-        ["", "", "", everythingObject.ricochet1.img, "", everythingObject.semiRicochet1.img, "", ""],
+        ["", everythingObject.ricochet12.img, "", everythingObject.ricochet11.img, "", everythingObject.semiRicochet11.img, everythingObject.semiRicochet12.img, ""],
         ["","","","","","","",""],
         ["","","","","","","",""],
         ["","","","","","","",""],
         ["","","","","","","",""],
-        ["","","",everythingObject.semiRicochet2.img,"",everythingObject.ricochet2.img,"",""],
+        ["",everythingObject.semiRicochet22.img,everythingObject.semiRicochet21.img,"",everythingObject.ricochet22.img,everythingObject.ricochet21.img,"",""],
         ["","",everythingObject.tank2.img,"",everythingObject.titan2.img,"",everythingObject.cannon2.img,""]
     ]
 }
@@ -98,11 +130,49 @@ else {
     piecePositions = JSON.parse(piecePositionsTemp);
 }
 
-let pieces = [everythingObject.titan1, everythingObject.tank1, everythingObject.cannon1, everythingObject.ricochet1, everythingObject.semiRicochet1,
-    everythingObject.titan2, everythingObject.tank2, everythingObject.cannon2, everythingObject.ricochet2, everythingObject.semiRicochet2
+let pieces = [
+    everythingObject.titan1,
+    everythingObject.tank1, 
+    everythingObject.cannon1, 
+    everythingObject.titan2,
+    everythingObject.tank2, 
+    everythingObject.cannon2,
+    everythingObject.ricochet11,
+    everythingObject.ricochet12, 
+    everythingObject.ricochet21,
+    everythingObject.ricochet22, 
+    everythingObject.semiRicochet11,
+    everythingObject.semiRicochet12,
+    everythingObject.semiRicochet21,
+    everythingObject.semiRicochet22
 ]
 
-let rotatablePieces = [everythingObject.ricochet1, everythingObject.ricochet2, everythingObject.semiRicochet1, everythingObject.semiRicochet2];
+let rotatablePieces = [
+    everythingObject.tank1,
+    everythingObject.tank2,
+    everythingObject.ricochet11,everythingObject.ricochet12, everythingObject.ricochet21,everythingObject.ricochet22, everythingObject.semiRicochet11,everythingObject.semiRicochet12, everythingObject.semiRicochet21,everythingObject.semiRicochet22
+    
+];
+
+let tanks = [
+    everythingObject.tank1,everythingObject.tank2
+]
+
+let swapablePieces = [
+    everythingObject.tank1,
+    everythingObject.tank2,
+    everythingObject.ricochet11,
+    everythingObject.ricochet12, 
+    everythingObject.ricochet21,
+    everythingObject.ricochet22, 
+    everythingObject.semiRicochet11,
+    everythingObject.semiRicochet12,
+    everythingObject.semiRicochet21,
+    everythingObject.semiRicochet22
+
+]
 
 console.log(piecePositions);
+
+
 
