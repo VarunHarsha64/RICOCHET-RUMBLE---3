@@ -91,14 +91,14 @@ if (everythingObjectTemp == null) {
         },
         semiRicochet21 : {
             id: 13,
-            img: `<div class="game-pieces player2 semi-ricochet2" data-id="13"><img src="../Images/semi-ricochet-new-2.png"></div>`,
+            img: `<div class="game-pieces player2 semi-ricochet2 " data-id="13"><img src="../Images/semi-ricochet-new-2.png"></div>`,
             row:6,
             column:2,
             angle:0
         },
         semiRicochet22 : {
             id: 14,
-            img: `<div class="game-pieces player2 semi-ricochet2" data-id="14"><img src="../Images/semi-ricochet-new-2.png"></div>`,
+            img: `<div class="game-pieces player2 semi-ricochet2 id-14" data-id="14"><img src="../Images/semi-ricochet-new-2.png"></div>`,
             row:6,
             column:1,
             angle:0

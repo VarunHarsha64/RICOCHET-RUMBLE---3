@@ -5,12 +5,12 @@ function handleGridRender() {
     let html = "";
     for(let i=0;i<=7;i++) {
         let html1='';
-        html1 = `<div class="game-row-${i} game-row">\n`;
+        html1 = `<div class="game-row-${i} game-row">`;
         let html2='';
         for(let j=0 ; j<=7 ; j++) {
-            html2 = html2 + `<div class="game-column-${j} game-box game-box-${i}-${j} centre-x-${calculateXCenter(j,bulletHeight,bulletWidth)}-centre-y-${calculateYCenter(i,bulletHeight,bulletWidth)}" data-position="${i}${j}" data-centre-x="${calculateXCenter(j,bulletHeight,bulletWidth)}" data-centre-y="${calculateYCenter(i,bulletHeight,bulletWidth)}"></div>\n`;
+            html2 = html2 + `<div class="game-column-${j} game-box game-box-${i}-${j} centre-x-${calculateXCenter(j,bulletHeight,bulletWidth)}-centre-y-${calculateYCenter(i,bulletHeight,bulletWidth)}" data-position="${i}${j}" data-centre-x="${calculateXCenter(j,bulletHeight,bulletWidth)}" data-centre-y="${calculateYCenter(i,bulletHeight,bulletWidth)}"></div>`;
         }
-        html1 = html1+html2+"</div>\n";
+        html1 = html1+html2+"</div>";
         html+=html1;
     }
     document.querySelector('.js-game-board').innerHTML = html;
@@ -67,7 +67,7 @@ function handleMove1(e) {
 
     currentMoveDetails.turn = 1;
     currentMoveDetails.id = parseInt(targetId);
-    currentMoveDetails.from = [e.target.parentNode.parentNode.dataset.position[0],e.target.parentNode.parentNode.dataset.position[1]];
+    currentMoveDetails.from = [parseInt(e.target.parentNode.parentNode.dataset.position[0]),parseInt(e.target.parentNode.parentNode.dataset.position[1])];
     console.log(currentMoveDetails.from);
     //console.log(parseInt(e.target.parentNode.dataset.id),'testing if id of elementis same as that of clicked element');
     //test successful - clicking anywhere inside the box gives the id of the object
@@ -84,6 +84,8 @@ function handleMove1(e) {
         var newButtonRight = buttonRight.cloneNode(true);
         buttonRight.parentNode.replaceChild(newButtonRight, buttonRight);
     })
+
+    console.log(targetId,'test10000')
 
     if (targetId === 1) {
         handleTitanMove(everythingObject.titan1,1);
@@ -123,7 +125,7 @@ function handleMove2(e) {
     const targetId = parseInt(e.target.parentNode.dataset.id);
 
     currentMoveDetails.turn = 2;
-    currentMoveDetails.id = parseInt(targetId);currentMoveDetails.from = [e.target.parentNode.parentNode.dataset.position[0],e.target.parentNode.parentNode.dataset.position[1]]
+    currentMoveDetails.id = parseInt(targetId);currentMoveDetails.from = [parseInt(e.target.parentNode.parentNode.dataset.position[0]),parseInt(e.target.parentNode.parentNode.dataset.position[1])]
     //console.log(parseInt(e.target.parentNode.dataset.id),'testing if id of elementis same as that of clicked element');
     //test successful - clicking anywhere inside the box gives the id of the object
 
@@ -209,7 +211,8 @@ function handleAvailableSpaces(availableSpaces,f,row,column,PiecePlayer) {
                 let targetColumn = parseInt(targetPosition[1]);
 
                 currentMoveDetails.to = [targetRow,targetColumn];
-                currentMoveDetails.swapId = e.target.parentNode.dataset.id;
+                currentMoveDetails.swapId = parseInt(e.target.parentNode.dataset.id);
+                console.log(currentMoveDetails.swapId,'test9988');
 
                 PiecePlayer.row = targetRow;
                 PiecePlayer.column = targetColumn;
@@ -315,7 +318,7 @@ function handleAvailableSpaces(availableSpaces,f,row,column,PiecePlayer) {
         // firstShootStop++;
     }
 
-
+    console.log(availableSpaces,'test9998');
     availableSpaces.forEach(([rowNew,columnNew],i)=>{
         const gameBox = document.querySelector(`.game-box-${rowNew}-${columnNew}`);
         console.log('test1');
@@ -406,11 +409,14 @@ function calculateAvailableSpaces(column,row) { // not for cannon
     console.log(column,row);
     // testing if correct column, row is being inputted to this function
     let availableSpaces = [];
-
-    for(let i=row-1;i<=row+1;i++){
-
+    let i,j;
+    for(i=row-1;i<=row+1;i++){
+        console.log(i,'test for i and row');
+        console.log(row,'test for i and row')
         if(i<=7&&i>=0){
-            for(let j=column-1;j<=column+1;j++){
+            for(j=column-1;j<=column+1;j++){
+                console.log(j);
+                console.log(column,'test for j and column')
                 if(j<=7&&j>=0){
                     if(piecePositions[i][j] === "") {
                         availableSpaces.push([i,j]);
@@ -420,6 +426,7 @@ function calculateAvailableSpaces(column,row) { // not for cannon
         }
     }
 
+    console.log(availableSpaces);
     return availableSpaces;
 }
 
@@ -454,6 +461,7 @@ function handleCannonMove(PiecePlayer,f) {
     handleAvailableSpaces(availableSpaces,f,row,column,PiecePlayer);
 }
 function handleRicochetMove(PiecePlayer,f) {
+    console.log('called here');
     let column = PiecePlayer.column;
     let row = PiecePlayer.row;
 
@@ -525,6 +533,7 @@ function gameEngine() {
     localStorage.setItem('piecePosition',JSON.stringify(piecePositions));
     localStorage.setItem('flag',flag);
     localStorage.setItem('removedSemiRicochetsList',JSON.stringify(removedListIds));
+    localStorage.setItem('movesHistory',JSON.stringify(movesHistory));
     
 }
 
@@ -669,7 +678,7 @@ function handleBulletShoot(PiecePlayer,f) {
         bullet.style.transform = 'rotate(0deg)'
     }
     
-
+    handleListModification();
     request = setInterval(()=>{
         shoot(absorbers,titans,ricochets,semiRicochets);
     },refreshRate);
@@ -757,7 +766,7 @@ function shoot(absorbers,titans,ricochets,semiRicochets) {
                         handleListIdRemoval();
                         console.log(rotatablePieces);
                         console.log(pieces);
-
+                        currentMoveDetails.lostId = semiRicochet.listId;
 
                         clearInterval(request);
                         handleHistoryStore();
@@ -813,6 +822,7 @@ function shoot(absorbers,titans,ricochets,semiRicochets) {
                         piecePositions[semiRicochet.row][semiRicochet.column] = '';
                         removedListIds.push(semiRicochet.listId);
                         handleListIdRemoval();
+                        currentMoveDetails.lostId = semiRicochet.listId;
 
                         clearInterval(request);
                         handleHistoryStore();
@@ -870,6 +880,7 @@ function shoot(absorbers,titans,ricochets,semiRicochets) {
                         
                         removedListIds.push(semiRicochet.listId);
                         handleListIdRemoval();
+                        currentMoveDetails.lostId = semiRicochet.listId;
 
                         clearInterval(request);
                         handleHistoryStore();
@@ -927,6 +938,7 @@ function shoot(absorbers,titans,ricochets,semiRicochets) {
                         piecePositions[semiRicochet.row][semiRicochet.column] = '';
                         
                         removedListIds.push(semiRicochet.listId);
+                        currentMoveDetails.lostId = semiRicochet.listId;
                         handleListIdRemoval();
 
                         clearInterval(request);
@@ -1032,8 +1044,9 @@ function handleTimer() {
     localStorage.setItem('timerList',JSON.stringify(timerList));
 
     //testing 
-    console.log(everythingObject.tank1.allow);
-    console.log(everythingObject.tank2.allow);
+    //console.log(everythingObject.tank1.allow);
+    //console.log(everythingObject.tank2.allow);
+    console.log(movesHistory);
 
 }
 
@@ -1111,7 +1124,7 @@ function handleContinueButton() {
 
 function handleHistoryStore() {
     movesHistory[0]++;
-    movesHistory.push(JSON.parse(JSON.stringify(currentMoveDetails)));
+    movesHistory[movesHistory[0]] = JSON.parse(JSON.stringify(currentMoveDetails));
     localStorage.setItem('movesHistory',JSON.stringify(movesHistory));
     console.log(movesHistory);
 
@@ -1121,6 +1134,7 @@ function handleHistoryStore() {
     currentMoveDetails.to= [null,null];
     currentMoveDetails.rotate= null
     currentMoveDetails.swapId = null;
+    currentMoveDetails.lostId = null;
   
 }
 
@@ -1152,7 +1166,7 @@ function handleHistoryDisplay() {
     toggleButton.addEventListener('click',handleHistoryClose)
 
     if(historyOfMoves != null) {
-        for(i=1;i<=historyOfMoves.length-1;i++) {
+        for(i=1;i<=historyOfMoves[0];i++) {
             switch (historyOfMoves[i].id) {
                 case 8:
                 case 1:
@@ -1277,6 +1291,189 @@ function handleListIdRemoval() {
     }
 }
 
+function handleUndoButton() {
+    let currentPointer = movesHistory[0];
+    if(currentPointer !== 0) {
+        
+        let moveToUndo = movesHistory[currentPointer];
+        console.log(moveToUndo.lostId);
+        if(moveToUndo.lostId !== null) {
+            let lostObject = Object.values(everythingObject).find(obj => obj.id === moveToUndo.lostId);
+            const originalPieceBox = document.querySelector(`.game-box-${lostObject.row}-${lostObject.column}`);
+            originalPieceBox.innerHTML = lostObject.img;
+            piecePositions[lostObject.row][lostObject.column] = lostObject.img;
+            removedListIds.pop();
+            pieces.push(lostObject);
+            rotatablePieces.push(lostObject);
+            swapablePieces.push(lostObject);
+        }
+        if(moveToUndo.rotate === null) {
+            if(moveToUndo.swapId === null) {
+                console.log('test9999')
+                let fromObject = Object.values(everythingObject).find(obj => obj.id === moveToUndo.id);
+                console.log(everythingObject.ricochet11);
+                console.log(fromObject);
+                console.log(typeof moveToUndo.from[0])
+                fromObject.row = moveToUndo.from[0];
+                fromObject.column = moveToUndo.from[1];
+                console.log(everythingObject.ricochet11);
+
+                let temp = piecePositions[moveToUndo.to[0]][moveToUndo.to[1]];
+                console.log(temp);
+                piecePositions[moveToUndo.to[0]][moveToUndo.to[1]] = "";
+                console.log(piecePositions[moveToUndo.to[0]][moveToUndo.to[1]])
+                piecePositions[moveToUndo.from[0]][moveToUndo.from[1]] = temp;
+                flag*=-1;
+                movesHistory[0]--;
+                gameEngine();
+                //handleRicochetMove(everythingObject.ricochet11,1);
+
+                // let innerDiv = document.querySelector(`.game-box-${}-${}`);
+                // let clone = innerDiv.cloneNode(true);
+                // innerDiv.parentNode.insertBefore(clone, innerDiv);
+                // innerDiv.remove();
+                
+            }
+            else {
+                let fromObject = Object.values(everythingObject).find(obj => obj.id === moveToUndo.id);
+                let swapObject = Object.values(everythingObject).find(obj => obj.id === moveToUndo.swapId);
+
+                fromObject.row = moveToUndo.from[0];
+                fromObject.column = moveToUndo.from[1];
+
+                swapObject.row = moveToUndo.to[0];
+                swapObject.column = moveToUndo.to[1];
+
+                let temp = piecePositions[moveToUndo.to[0]][moveToUndo.to[1]];
+                console.log(temp);
+                piecePositions[moveToUndo.to[0]][moveToUndo.to[1]] = piecePositions[moveToUndo.from[0]][moveToUndo.from[1]] ;
+                console.log(piecePositions[moveToUndo.to[0]][moveToUndo.to[1]])
+                piecePositions[moveToUndo.from[0]][moveToUndo.from[1]] = temp;
+                flag*=-1;
+                movesHistory[0]--;
+                gameEngine();
+            }
+        }
+        else {
+            if(moveToUndo.rotate === 'left') {
+                let fromObject = Object.values(everythingObject).find(obj => obj.id === moveToUndo.id);
+                fromObject.angle += 90;
+                flag*=-1;
+                movesHistory[0]--;
+                gameEngine();
+                
+                
+
+            }
+            else {
+                let fromObject = Object.values(everythingObject).find(obj => obj.id === moveToUndo.id);
+                fromObject.angle -= 90;
+                movesHistory[0]--;
+                flag*=-1;
+                gameEngine();
+            }
+        }
+    }
+    
+}
+
+function handleRedoButton() {
+    let currentPointer = movesHistory[0];
+    
+    if(currentPointer != movesHistory.length -1) {
+        currentPointer++;
+        let moveToRedo = movesHistory[currentPointer];
+        console.log(moveToRedo.lostId);
+        if(moveToRedo.lostId !== null) {
+            let lostObject = Object.values(everythingObject).find(obj => obj.id === moveToRedo.lostId);
+            const originalPieceBox = document.querySelector(`.game-box-${lostObject.row}-${lostObject.column}`);
+            originalPieceBox.innerHTML = '';
+            piecePositions[lostObject.row][lostObject.column] = "";
+            removedListIds.push(lostObject.id);
+            handleListIdRemoval();
+        }
+        if(moveToRedo.rotate === null) {
+            if(moveToRedo.swapId === null) {
+                console.log('test9999')
+
+                let fromObject = Object.values(everythingObject).find(obj => obj.id === moveToRedo.id);
+
+                console.log(everythingObject.ricochet11);
+                console.log(fromObject);
+                console.log(typeof moveToRedo.from[0])
+
+                fromObject.row = moveToRedo.to[0];
+                fromObject.column = moveToRedo.to[1];
+                console.log(everythingObject.ricochet11);
+
+                let temp = piecePositions[moveToRedo.from[0]][moveToRedo.from[1]];
+                console.log(temp);
+                piecePositions[moveToRedo.from[0]][moveToRedo.from[1]] = "";
+                console.log(piecePositions[moveToRedo.to[0]][moveToRedo.to[1]])
+                piecePositions[moveToRedo.to[0]][moveToRedo.to[1]] = temp;
+                flag*=-1;
+                movesHistory[0]++;
+                gameEngine();
+                //handleRicochetMove(everythingObject.ricochet11,1);
+
+                // let innerDiv = document.querySelector(`.game-box-${}-${}`);
+                // let clone = innerDiv.cloneNode(true);
+                // innerDiv.parentNode.insertBefore(clone, innerDiv);
+                // innerDiv.remove();
+                
+            }
+            else {
+                let fromObject = Object.values(everythingObject).find(obj => obj.id === moveToRedo.id);
+                let swapObject = Object.values(everythingObject).find(obj => obj.id === moveToRedo.swapId);
+
+                fromObject.row = moveToRedo.to[0];
+                fromObject.column = moveToRedo.to[1];
+
+                swapObject.row = moveToRedo.from[0];
+                swapObject.column = moveToRedo.from[1];
+
+                let temp = piecePositions[moveToRedo.to[0]][moveToRedo.to[1]];
+                console.log(temp);
+                piecePositions[moveToRedo.to[0]][moveToRedo.to[1]] = piecePositions[moveToRedo.from[0]][moveToRedo.from[1]] ;
+                console.log(piecePositions[moveToRedo.to[0]][moveToRedo.to[1]])
+                piecePositions[moveToRedo.from[0]][moveToRedo.from[1]] = temp;
+                flag*=-1;
+                movesHistory[0]++;
+                gameEngine();
+            }
+        }
+        else {
+            if(moveToRedo.rotate === 'left') {
+                let fromObject = Object.values(everythingObject).find(obj => obj.id === moveToRedo.id);
+                fromObject.angle -= 90;
+                flag*=-1;
+                movesHistory[0]--;
+                gameEngine();
+                
+                
+
+            }
+            else {
+                let fromObject = Object.values(everythingObject).find(obj => obj.id === moveToRedo.id);
+                fromObject.angle += 90;
+                movesHistory[0]--;
+                flag*=-1;
+                gameEngine();
+            }
+        }
+    }
+}
+
+function handleListModification() { //used when the undo button is placed and some other move is performed it deletes all the other unwanted moves afterwards
+    if (movesHistory[0] === movesHistory.length - 1) {
+        0;
+    }
+    else {
+        movesHistory = movesHistory.slice(0, movesHistory[0]+1);
+    }
+    
+}
+
 
 /* general variables to be declared over here */
 const absorbingAudio = new Audio('../Audio/post-edit/absorbing-sound.wav');
@@ -1336,7 +1533,8 @@ let currentMoveDetails = {
     from: [null,null],
     to: [null,null],
     rotate: null,
-    swapId: null
+    swapId: null,
+    lostId: null
 }
 
 let movesHistory;
@@ -1384,6 +1582,10 @@ document.querySelector('.js-pause-button').addEventListener('click',handlePauseB
 document.querySelector('.reset-button').addEventListener('click',handleResetButton)
 
 document.querySelector('.history-button').addEventListener('click',handleHistoryDisplay);
+
+document.querySelector('.undo-button').addEventListener('click',handleUndoButton);
+
+document.querySelector('.redo-button').addEventListener('click',handleRedoButton);
 
 handleListIdRemoval();
 gameEngine();
